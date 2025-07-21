@@ -37,17 +37,11 @@
                     <label for="volunteer-team" class="block text-sm font-medium text-gray-700 mb-2">Your Team</label>
                     <select id="volunteer-team" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
                         <option value="">Select a team...</option>
-                        <option value="Front Desk">Front Desk</option>
-                        <option value="Food Bank">Food Bank</option>
-                        <option value="Kitchen">Kitchen</option>
-                        <option value="Special Events">Special Events</option>
-                        <option value="Seniors Program">Seniors Program</option>
-                        <option value="Tax Clinic">Tax Clinic</option>
-                        <option value="Computer Class">Computer Class</option>
-                        <option value="Language Class">Language Class</option>
-                        <option value="Summer Camp">Summer Camp</option>
-                        <option value="Maintenance">Maintenance</option>
-                        <option value="Board of Directors">Board of Directors</option>
+                        <option value="Events">Events</option>
+                        <option value="Outreach & Marketing">Outreach & Marketing</option>
+                        <option value="Social Media & Graphic Design">Social Media & Graphic Design</option>
+                        <option value="Data">Data</option>
+                        <option value="Intake">Intake</option>
                         <option value="Manager">Manager</option>
                     </select>
                 </div>
@@ -140,13 +134,11 @@
     </div>
 
     <script type="module">
-        // Updated Firebase SDK to 10.4.0 for consistency, can be updated if needed
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, where, setDoc, getDoc, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
         import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app-check.js";
 
-        // Your Firebase Configuration (THIS IS CORRECT AND SHOULD REMAIN PUBLIC)
         const firebaseConfig = {
             apiKey: "AIzaSyCFxuFQkkQQmEZM4xHcAzsiduCRDNWHzyc",
             authDomain: "misss-volunteer-timesheet-app.firebaseapp.com",
@@ -157,13 +149,11 @@
         };
         
         let app, db, auth, userId, userProfile;
-        // Using projectId from config for data path consistency, not the client-app-specific appId
         let currentProjectId; 
         let isAuthReady = false, isManager = false, isManagerView = false;
         let profilesCache = {};
-        let unsubscribe; // To store the Firestore unsubscribe function
+        let unsubscribe;
 
-        // DOM elements
         const profileModal = document.getElementById('profile-modal');
         const profileForm = document.getElementById('profile-form');
         const volunteerTeamSelect = document.getElementById('volunteer-team');
@@ -180,7 +170,6 @@
         const managerToggle = document.getElementById('manager-toggle');
         const tableTitle = document.getElementById('table-title');
 
-        // Event listener for Manager password input to clear error immediately
         managerPasswordInput.addEventListener('input', () => {
             passwordError.classList.add('hidden');
         });
@@ -195,15 +184,13 @@
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-                currentProjectId = firebaseConfig.projectId; // Use projectId for data path
+                currentProjectId = firebaseConfig.projectId;
 
-                setLogLevel('debug'); // Keep for debugging, remove for production
+                setLogLevel('debug');
 
-                // Initialize App Check only if grecaptcha is available (meaning script loaded)
                 if (typeof grecaptcha !== 'undefined') {
                     initializeAppCheck(app, {
                         provider: new ReCaptchaV3Provider('6LcezoorAAAAANKEDrvWyXOdiqM3QvcESRxqWH4j'),
-                        // isServiceWorker: true, // REMOVED: Only set to true if you explicitly use a Firebase-aware service worker
                     });
                 } else {
                     console.warn("reCAPTCHA v3 script not loaded. App Check will not function.");
@@ -218,12 +205,11 @@
                         await checkUserProfile();
                     } else {
                         try {
-                            // Attempt anonymous sign-in if no user is found
                             await signInAnonymously(auth);
                         } catch (authError) {
                             console.error("Anonymous Authentication failed:", authError);
                             errorMessageDiv.textContent = "Could not connect to the service. Please check authentication rules in your Firebase project (e.g., Anonymous Sign-in).";
-                            loadingState.textContent = "Authentication failed."; // Update loading state
+                            loadingState.textContent = "Authentication failed.";
                         }
                     }
                 });
@@ -235,7 +221,6 @@
 
         async function checkUserProfile() {
             if (!userId) return;
-            // Use currentProjectId for the path
             const profileRef = doc(db, `artifacts/${currentProjectId}/public/data/profiles`, userId);
             try {
                 const docSnap = await getDoc(profileRef);
@@ -249,15 +234,15 @@
                         isManager = true;
                         managerToggleContainer.classList.remove('hidden');
                     }
-                    setupRealtimeListener(); // Start listening for data after profile is loaded
+                    setupRealtimeListener();
                 } else {
                     profileModal.classList.remove('hidden');
-                    loadingState.textContent = ""; // Clear loading state if modal is shown
+                    loadingState.textContent = "";
                 }
             } catch (error) {
                 console.error("Error checking user profile:", error);
                 errorMessageDiv.textContent = "Failed to load user profile. Check Firestore security rules for profiles.";
-                loadingState.textContent = ""; // Clear loading state on error
+                loadingState.textContent = "";
             }
         }
         
@@ -274,7 +259,7 @@
 
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            passwordError.classList.add('hidden'); // Hide any previous error
+            passwordError.classList.add('hidden');
             const name = document.getElementById('volunteer-name').value;
             const team = volunteerTeamSelect.value;
             if (!name || !team) {
@@ -285,20 +270,18 @@
             const newProfile = { name, team, role: 'volunteer' };
             
             if (team === 'Manager') {
-                // Hardcoded password for demonstration. In a real app, use Firebase Auth with custom claims or Cloud Functions.
                 if (managerPasswordInput.value === 'MISSSmanager2024!') {
                     newProfile.role = 'manager';
                 } else {
                     passwordError.classList.remove('hidden');
-                    return; // Stop submission if password is wrong
+                    return;
                 }
             }
 
-            // Use currentProjectId for the path
             const profileRef = doc(db, `artifacts/${currentProjectId}/public/data/profiles`, userId);
             try {
                 await setDoc(profileRef, newProfile);
-                await checkUserProfile(); // Re-check profile to update UI and roles
+                await checkUserProfile();
             } catch (error) {
                 console.error("Error saving profile:", error);
                 errorMessageDiv.textContent = "Failed to save profile. Check Firestore security rules for profiles.";
@@ -306,20 +289,19 @@
         });
 
         function setupRealtimeListener() {
-            if (unsubscribe) unsubscribe(); // Unsubscribe from previous listener if any
+            if (unsubscribe) unsubscribe();
             if (!isAuthReady || !db || !userId) {
                 console.warn("Authentication not ready or Firebase not initialized for listener.");
                 return;
             }
 
-            // Use currentProjectId for the path
             const timesheetCollectionRef = collection(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`);
             let q;
 
             if (isManagerView && isManager) {
                 tableTitle.textContent = "All Volunteer Hours";
                 q = query(timesheetCollectionRef);
-                fetchAllProfiles(); // Fetch all profiles for manager view
+                fetchAllProfiles();
                 document.getElementById('th-volunteer').classList.remove('hidden');
                 document.getElementById('th-team').classList.remove('hidden');
             } else {
@@ -329,10 +311,10 @@
                 document.getElementById('th-team').classList.add('hidden');
             }
             
-            loadingState.style.display = 'block'; // Show loading state before fetching
+            loadingState.style.display = 'block';
 
             unsubscribe = onSnapshot(q, (snapshot) => {
-                loadingState.style.display = 'none'; // Hide loading state once data arrives
+                loadingState.style.display = 'none';
                 const entries = [];
                 snapshot.forEach(doc => {
                     entries.push({ id: doc.id, ...doc.data() });
@@ -347,11 +329,10 @@
         }
         
         async function fetchAllProfiles() {
-            // Use currentProjectId for the path
             const profilesCollectionRef = collection(db, `artifacts/${currentProjectId}/public/data/profiles`);
             try {
                 const snapshot = await getDocs(profilesCollectionRef);
-                profilesCache = {}; // Clear cache
+                profilesCache = {};
                 snapshot.forEach(doc => {
                     profilesCache[doc.id] = doc.data();
                 });
@@ -371,7 +352,6 @@
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-gray-50';
                 
-                // Determine profile based on view mode
                 const profile = isManagerView ? profilesCache[entry.userId] : userProfile;
                 const volunteerName = profile ? profile.name : 'Unknown';
                 const volunteerTeam = profile ? profile.team : 'N/A';
@@ -394,12 +374,9 @@
             });
         }
         
-        // This function is no longer needed as header toggling is handled directly in setupRealtimeListener
-        // function updateTableHeaders() { } 
-
         timesheetForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            errorMessageDiv.textContent = ''; // Clear previous error messages
+            errorMessageDiv.textContent = '';
             const formData = {
                 date: document.getElementById('date').value,
                 timeIn: document.getElementById('time-in').value,
@@ -421,12 +398,66 @@
             }
 
             try {
-                // Use currentProjectId for the path
                 const timesheetCollectionRef = collection(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`);
                 await addDoc(timesheetCollectionRef, {
                     ...formData,
                     userId: userId,
-                    userName: userProfile.name, // Add user's name for easier lookup in manager view
-                    userTeam: userProfile.team, // Add user's team for easier lookup in manager view
+                    userName: userProfile.name,
+                    userTeam: userProfile.team,
                     totalHours: calculateTotalHours(start, end),
-                    createdAt: new Date().toISOString() // Store as ISO string for consistent sorting
+                    createdAt: new Date().toISOString()
+                });
+                timesheetForm.reset();
+                setDefaultDate();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                if (error.code === 'appCheck/token-expired' || error.code === 'appCheck/invalid-token') {
+                    errorMessageDiv.textContent = 'Failed to save entry. App Check verification failed. Please refresh the page.';
+                } else if (error.code === 'permission-denied') {
+                    errorMessageDiv.textContent = 'Permission denied. Check your Firestore Security Rules.';
+                } else {
+                    errorMessageDiv.textContent = 'Failed to save entry. Please try again.';
+                }
+            }
+        });
+
+        tableBody.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                const id = e.target.dataset.id;
+                try {
+                    const docRef = doc(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`, id);
+                    await deleteDoc(docRef);
+                } catch (error) {
+                    console.error("Error deleting document: ", error);
+                    if (error.code === 'appCheck/token-expired' || error.code === 'appCheck/invalid-token') {
+                        errorMessageDiv.textContent = 'Failed to delete entry. App Check verification failed. Please refresh the page.';
+                    } else if (error.code === 'permission-denied') {
+                        errorMessageDiv.textContent = 'Permission denied. Check your Firestore Security Rules.';
+                    } else {
+                        errorMessageDiv.textContent = 'Failed to delete entry.';
+                    }
+                }
+            }
+        });
+        
+        managerToggle.addEventListener('change', (e) => {
+            isManagerView = e.target.checked;
+            setupRealtimeListener();
+        });
+
+        const calculateTotalHours = (start, end) => {
+            let diff = end.getTime() - start.getTime();
+            let hours = Math.floor(diff / 3600000);
+            let minutes = Math.floor((diff % 3600000) / 60000);
+            return `${hours}h ${minutes}m`;
+        };
+        const formatTime = (timeString) => new Date(`1970-01-01T${timeString}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        const setDefaultDate = () => document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+        window.onload = () => {
+            setDefaultDate();
+            initializeAppAndAuth();
+        };
+    </script>
+</body>
+</html>
