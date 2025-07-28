@@ -13,94 +13,74 @@
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #64748b; }
         .hidden { display: none; }
-        /* MISSS Branding Colors */
-        .bg-misss-primary { background-color: #004a8f; } /* Dark Blue */
+        .bg-misss-primary { background-color: #004a8f; }
         .hover\:bg-misss-primary-dark:hover { background-color: #003366; }
-        .text-misss-secondary { color: #fdb813; } /* Yellow/Gold */
+        .text-misss-secondary { color: #fdb813; }
         .ring-misss-secondary:focus { ring-color: #fdb813; }
         .border-misss-secondary { border-color: #fdb813; }
+        summary::-webkit-details-marker { display: none; }
     </style>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcezoorAAAAANKEDrvWyXOdiqM3QvcESRxqWH4j"></script>
 </head>
 <body class="bg-slate-100 text-gray-800 antialiased">
 
-    <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Welcome to the MISSS Timesheet!</h2>
-            <p class="text-gray-600 mb-6">Let's set up your volunteer profile.</p>
-            <form id="profile-form">
-                <div class="mb-4">
-                    <label for="volunteer-name" class="block text-sm font-medium text-gray-700 mb-2">Your Full Name</label>
-                    <input type="text" id="volunteer-name" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
-                </div>
-                <div class="mb-4">
-                    <label for="volunteer-team" class="block text-sm font-medium text-gray-700 mb-2">Your Team</label>
-                    <select id="volunteer-team" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
-                        <option value="">Select a team...</option>
-                        <option value="Events">Events</option>
-                        <option value="Outreach & Marketing">Outreach & Marketing</option>
-                        <option value="Social Media & Graphic Design">Social Media & Graphic Design</option>
-                        <option value="Data">Data</option>
-                        <option value="Intake">Intake</option>
-                        <option value="Manager">Manager</option>
-                    </select>
-                </div>
-                <div id="manager-password-container" class="mb-6 hidden">
-                    <label for="manager-password" class="block text-sm font-medium text-gray-700 mb-2">Manager Password</label>
-                    <input type="password" id="manager-password" class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
-                       <p id="password-error" class="text-red-500 text-sm mt-2 hidden">Incorrect password.</p>
-                </div>
-                <button type="submit" class="w-full bg-misss-primary hover:bg-misss-primary-dark text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">Save Profile</button>
-            </form>
+    <!-- Login Screen -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-100 flex items-center justify-center z-50">
+        <div class="text-center p-8">
+            <img src="https://misss.ca/wp-content/uploads/2021/06/logo-1.png" alt="MISSS Logo" class="h-24 mx-auto mb-8">
+            <h1 class="text-4xl font-bold text-misss-primary mb-2">MISSS Volunteer Timesheet</h1>
+            <p class="text-gray-600 mb-8">Please sign in to continue.</p>
+            <button id="login-button" class="bg-misss-primary hover:bg-misss-primary-dark text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform hover:scale-105 flex items-center mx-auto">
+                <svg class="w-6 h-6 mr-3" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C42.021,35.596,44,30.138,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
+                Sign In with Google
+            </button>
         </div>
     </div>
 
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-6xl">
-        <header class="text-center mb-8 flex flex-col items-center">
-               <img src="https://misss.ca/wp-content/uploads/2021/06/logo-1.png" alt="MISSS Logo" class="h-20 mb-4" onerror="this.onerror=null; this.alt='MISSS Logo'; this.style.display='none'; document.getElementById('header-text').classList.remove('hidden');">
-               <h1 id="header-text" class="text-3xl sm:text-4xl font-bold text-misss-primary hidden">MISSS Team Timesheet</h1>
-             <p id="welcome-message" class="text-gray-600 mt-2">Log and track your valuable contributions.</p>
-        </header>
-
-        <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-900">Add New Entry</h2>
-            <form id="timesheet-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div>
-                        <label for="date" class="block text-sm font-medium text-gray-700 mb-2">Date</label>
-                        <input type="date" id="date" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
+    <!-- Main App Content (hidden initially) -->
+    <div id="app-content" class="hidden">
+        <!-- Profile Setup Modal -->
+        <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">One Last Step...</h2>
+                <p class="text-gray-600 mb-6">Your name is set. Please select your team to finish your profile.</p>
+                <form id="profile-form">
+                    <div class="mb-4">
+                        <label for="volunteer-name" class="block text-sm font-medium text-gray-700 mb-2">Your Name (from Google)</label>
+                        <input type="text" id="volunteer-name" disabled class="w-full bg-gray-200 border-gray-300 text-gray-600 rounded-lg p-3">
                     </div>
-                    <div>
-                        <label for="time-in" class="block text-sm font-medium text-gray-700 mb-2">Time In</label>
-                        <input type="time" id="time-in" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
+                    <div class="mb-4">
+                        <label for="volunteer-team" class="block text-sm font-medium text-gray-700 mb-2">Your Team</label>
+                        <select id="volunteer-team" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
+                            <option value="">Select a team...</option>
+                             <option value="Events">Events</option>
+                             <option value="Outreach & Marketing">Outreach & Marketing</option>
+                             <option value="Social Media & Graphic Design">Social Media & Graphic Design</option>
+                             <option value="Data">Data</option>
+                             <option value="Intake">Intake</option>
+                            <option value="Manager">Manager</option>
+                        </select>
                     </div>
-                    <div>
-                        <label for="time-out" class="block text-sm font-medium text-gray-700 mb-2">Time Out</label>
-                        <input type="time" id="time-out" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
+                    <div id="manager-password-container" class="mb-6 hidden">
+                        <label for="manager-password" class="block text-sm font-medium text-gray-700 mb-2">Manager Password</label>
+                        <input type="password" id="manager-password" class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary">
+                        <p id="password-error" class="text-red-500 text-sm mt-2 hidden">Incorrect password.</p>
                     </div>
-                </div>
-                <div class="md:col-span-2">
-                    <label for="task-name" class="block text-sm font-medium text-gray-700 mb-2">Task Name</label>
-                    <input type="text" id="task-name" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary" placeholder="e.g., Database Cleanup, Survey Data Entry">
-                </div>
-                <div class="md:col-span-2">
-                    <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Notes (Optional)</label>
-                    <textarea id="notes" rows="3" class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary" placeholder="Add any extra details here..."></textarea>
-                </div>
-                <div class="md:col-span-2 text-right">
-                    <button type="submit" class="bg-misss-primary hover:bg-misss-primary-dark text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">Add Entry</button>
-                </div>
-            </form>
-            <div id="error-message" class="text-red-600 mt-4"></div>
+                    <button type="submit" class="w-full bg-misss-primary hover:bg-misss-primary-dark text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">Save Profile</button>
+                </form>
+            </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div class="p-6 flex justify-between items-center flex-wrap gap-4">
-                    <div>
-                        <h2 id="table-title" class="text-2xl font-semibold text-gray-900">My Logged Hours</h2>
-                           <p id="user-id-display" class="text-sm text-gray-500 mt-1"></p>
-                    </div>
-                    <div id="manager-toggle-container" class="hidden">
+        <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+            <header class="mb-8 flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                     <img src="https://misss.ca/wp-content/uploads/2021/06/logo-1.png" alt="MISSS Logo" class="h-16">
+                     <div>
+                        <h1 class="text-2xl font-bold text-misss-primary">Volunteer Timesheet</h1>
+                        <p id="welcome-message" class="text-gray-600">Welcome!</p>
+                     </div>
+                </div>
+                <div class="flex items-center gap-4">
+                     <div id="manager-toggle-container" class="hidden">
                         <label for="manager-toggle" class="flex items-center cursor-pointer">
                             <span class="mr-3 text-sm font-medium text-gray-700">Manager Mode</span>
                             <div class="relative">
@@ -110,165 +90,132 @@
                             </div>
                         </label>
                     </div>
+                    <button id="logout-button" class="bg-slate-200 hover:bg-slate-300 text-gray-700 font-semibold py-2 px-4 rounded-lg text-sm">Sign Out</button>
                 </div>
-            <div id="loading-state" class="p-6 text-center text-gray-500">Loading...</div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-sm text-left text-gray-800">
-                    <thead class="bg-gray-50 text-xs text-gray-600 uppercase tracking-wider">
-                        <tr>
-                            <th id="th-volunteer" scope="col" class="px-6 py-3 hidden">Volunteer</th>
-                            <th id="th-team" scope="col" class="px-6 py-3 hidden">Team</th>
-                            <th scope="col" class="px-6 py-3">Date</th>
-                            <th scope="col" class="px-6 py-3">Time In</th>
-                            <th scope="col" class="px-6 py-3">Time Out</th>
-                            <th scope="col" class="px-6 py-3">Total Hours</th>
-                            <th scope="col" class="px-6 py-3">Task</th>
-                            <th scope="col" class="px-6 py-3">Notes</th>
-                            <th scope="col" class="px-6 py-3 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="timesheet-body" class="divide-y divide-gray-200"></tbody>
-                </table>
+            </header>
+
+            <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+                 <h2 class="text-2xl font-semibold mb-4 text-gray-900">Add New Entry</h2>
+                 <form id="timesheet-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div><label for="date" class="block text-sm font-medium text-gray-700 mb-2">Date</label><input type="date" id="date" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary"></div>
+                        <div><label for="time-in" class="block text-sm font-medium text-gray-700 mb-2">Time In</label><input type="time" id="time-in" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary"></div>
+                        <div><label for="time-out" class="block text-sm font-medium text-gray-700 mb-2">Time Out</label><input type="time" id="time-out" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary"></div>
+                    </div>
+                    <div class="md:col-span-2"><label for="task-name" class="block text-sm font-medium text-gray-700 mb-2">Task Name</label><input type="text" id="task-name" required class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary" placeholder="e.g., Database Cleanup, Survey Data Entry"></div>
+                    <div class="md:col-span-2"><label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Notes (Optional)</label><textarea id="notes" rows="3" class="w-full bg-gray-100 border-gray-300 text-gray-900 rounded-lg p-3 focus:ring-2 ring-misss-secondary" placeholder="Add any extra details here..."></textarea></div>
+                    <div class="md:col-span-2 text-right"><button type="submit" class="bg-misss-primary hover:bg-misss-primary-dark text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">Add Entry</button></div>
+                 </form>
+                 <div id="error-message" class="text-red-600 mt-4"></div>
+            </div>
+
+            <!-- Monthly Entries Container -->
+            <div id="monthly-entries-container" class="space-y-4">
+                <div id="loading-state" class="p-6 text-center text-gray-500">Loading entries...</div>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, where, setDoc, getDoc, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, where, setDoc, getDoc, getDocs, setLogLevel, updateDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
         import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app-check.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAIxuVxevl3KYkb_Q7njcSBINLVHMc3BeE",
-            authDomain: "misss-volunteer-timesheet-app.firebaseapp.com",
-            projectId: "misss-volunteer-timesheet-app",
-            storageBucket: "misss-volunteer-timesheet-app.appspot.com",
-            messagingSenderId: "606889555082",
-            appId: "1:606889555082:web:eb3e21925ffe0829c96973"
+             apiKey: "AIzaSyAIxuVxevl3KYkb_Q7njcSBINLVHMc3BeE",
+             authDomain: "misss-volunteer-timesheet-app.firebaseapp.com",
+             projectId: "misss-volunteer-timesheet-app",
+             storageBucket: "misss-volunteer-timesheet-app.appspot.com",
+             messagingSenderId: "606889555082",
+             appId: "1:606889555082:web:eb3e21925ffe0829c96973"
         };
         
-        let app, db, auth, userId, userProfile;
-        let currentProjectId; 
-        let isAuthReady = false, isManager = false, isManagerView = false;
-        let profilesCache = {};
+        let app, db, auth, currentProjectId, userProfile;
+        let isManager = false, isManagerView = false;
         let unsubscribe;
 
+        // UI Elements
+        const loginScreen = document.getElementById('login-screen');
+        const appContent = document.getElementById('app-content');
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
         const profileModal = document.getElementById('profile-modal');
         const profileForm = document.getElementById('profile-form');
+        const volunteerNameInput = document.getElementById('volunteer-name');
         const volunteerTeamSelect = document.getElementById('volunteer-team');
         const managerPasswordContainer = document.getElementById('manager-password-container');
         const managerPasswordInput = document.getElementById('manager-password');
         const passwordError = document.getElementById('password-error');
         const timesheetForm = document.getElementById('timesheet-form');
-        const tableBody = document.getElementById('timesheet-body');
+        const monthlyEntriesContainer = document.getElementById('monthly-entries-container');
         const loadingState = document.getElementById('loading-state');
         const errorMessageDiv = document.getElementById('error-message');
-        const userIdDisplay = document.getElementById('user-id-display');
         const welcomeMessage = document.getElementById('welcome-message');
         const managerToggleContainer = document.getElementById('manager-toggle-container');
         const managerToggle = document.getElementById('manager-toggle');
-        const tableTitle = document.getElementById('table-title');
 
-        managerPasswordInput.addEventListener('input', () => {
-            passwordError.classList.add('hidden');
-        });
-
-        async function initializeAppAndAuth() {
+        function initializeFirebase() {
             if (typeof firebaseConfig === 'undefined' || !firebaseConfig.projectId) {
-                loadingState.textContent = "Error: Firebase configuration is missing or invalid.";
-                console.error("Firebase configuration is missing or invalid.");
+                console.error("Firebase config missing!");
                 return;
             }
-            try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                currentProjectId = firebaseConfig.projectId;
-
-                setLogLevel('debug');
-
-                if (typeof grecaptcha !== 'undefined') {
-                    initializeAppCheck(app, {
-                        provider: new ReCaptchaV3Provider('6LcezoorAAAAANKEDrvWyXOdiqM3QvcESRxqWH4j'),
-                    });
-                } else {
-                    console.warn("reCAPTCHA v3 script not loaded. App Check will not function.");
-                    errorMessageDiv.textContent = "Warning: reCAPTCHA not loaded. App Check may not function correctly.";
-                }
-
-                onAuthStateChanged(auth, async (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        isAuthReady = true;
-                        userIdDisplay.textContent = `Your ID: ${userId}`;
-                        await checkUserProfile();
-                    } else {
-                        try {
-                            await signInAnonymously(auth);
-                        } catch (authError) {
-                            console.error("Anonymous Authentication failed:", authError);
-                            errorMessageDiv.textContent = "Could not connect to the service. Please check authentication rules in your Firebase project (e.g., Anonymous Sign-in).";
-                            loadingState.textContent = "Authentication failed.";
-                        }
-                    }
-                });
-            } catch (e) {
-                console.error("Firebase initialization error:", e);
-                loadingState.textContent = "Error: Could not initialize the application.";
-            }
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            currentProjectId = firebaseConfig.projectId;
+            initializeAppCheck(app, { provider: new ReCaptchaV3Provider('6LcezoorAAAAANKEDrvWyXOdiqM3QvcESRxqWH4j'), isTokenAutoRefreshEnabled: true });
+            
+            onAuthStateChanged(auth, handleAuthStateChange);
         }
 
-        async function checkUserProfile() {
-            if (!userId) return;
-            const profileRef = doc(db, `artifacts/${currentProjectId}/public/data/profiles`, userId);
-            try {
-                const docSnap = await getDoc(profileRef);
-
-                if (docSnap.exists()) {
-                    userProfile = { id: docSnap.id, ...docSnap.data() };
-                    profileModal.classList.add('hidden');
-                    welcomeMessage.textContent = `Welcome, ${userProfile.name}!`;
-                    
-                    if (userProfile.role === 'manager') {
-                        isManager = true;
-                        managerToggleContainer.classList.remove('hidden');
-                    }
-                    setupRealtimeListener();
-                } else {
-                    profileModal.classList.remove('hidden');
-                    loadingState.textContent = "";
-                }
-            } catch (error) {
-                console.error("Error checking user profile:", error);
-                errorMessageDiv.textContent = "Failed to load user profile. Check Firestore security rules for profiles.";
-                loadingState.textContent = "";
-            }
-        }
-        
-        volunteerTeamSelect.addEventListener('change', (e) => {
-            if (e.target.value === 'Manager') {
-                managerPasswordContainer.classList.remove('hidden');
-                managerPasswordInput.required = true;
+        async function handleAuthStateChange(user) {
+            if (user) {
+                loginScreen.classList.add('hidden');
+                appContent.classList.remove('hidden');
+                await checkUserProfile(user);
             } else {
-                managerPasswordContainer.classList.add('hidden');
-                managerPasswordInput.required = false;
-                passwordError.classList.add('hidden');
+                loginScreen.classList.remove('hidden');
+                appContent.classList.add('hidden');
+                if(unsubscribe) unsubscribe();
             }
+        }
+
+        async function checkUserProfile(user) {
+            const profileRef = doc(db, `artifacts/${currentProjectId}/public/data/profiles`, user.uid);
+            const docSnap = await getDoc(profileRef);
+
+            if (docSnap.exists()) {
+                userProfile = { id: docSnap.id, ...docSnap.data() };
+                profileModal.classList.add('hidden');
+                welcomeMessage.textContent = `Welcome, ${userProfile.name}!`;
+                
+                isManager = userProfile.role === 'manager';
+                managerToggleContainer.classList.toggle('hidden', !isManager);
+                
+                setupRealtimeListener(user.uid);
+            } else {
+                profileModal.classList.remove('hidden');
+                volunteerNameInput.value = user.displayName;
+            }
+        }
+
+        loginButton.addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider).catch(error => console.error("Login failed", error));
         });
+
+        logoutButton.addEventListener('click', () => signOut(auth));
 
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            passwordError.classList.add('hidden');
-            const name = document.getElementById('volunteer-name').value;
-            const team = volunteerTeamSelect.value;
-            if (!name || !team) {
-                errorMessageDiv.textContent = "Please fill in all profile fields.";
-                return;
-            }
+            const user = auth.currentUser;
+            if (!user) return;
 
-            const newProfile = { name, team, role: 'volunteer' };
-            
+            const team = volunteerTeamSelect.value;
+            if (!team) return;
+
+            const newProfile = { name: user.displayName, email: user.email, team, role: 'volunteer' };
             if (team === 'Manager') {
                 if (managerPasswordInput.value === 'MISSSmanager2024!') {
                     newProfile.role = 'manager';
@@ -278,186 +225,184 @@
                 }
             }
 
-            const profileRef = doc(db, `artifacts/${currentProjectId}/public/data/profiles`, userId);
-            try {
-                await setDoc(profileRef, newProfile);
-                await checkUserProfile();
-            } catch (error) {
-                console.error("Error saving profile:", error);
-                errorMessageDiv.textContent = "Failed to save profile. Check Firestore security rules for profiles.";
-            }
+            const profileRef = doc(db, `artifacts/${currentProjectId}/public/data/profiles`, user.uid);
+            await setDoc(profileRef, newProfile);
+            await checkUserProfile(user);
         });
 
-        function setupRealtimeListener() {
+        volunteerTeamSelect.addEventListener('change', () => {
+            const isManagerSelected = volunteerTeamSelect.value === 'Manager';
+            managerPasswordContainer.classList.toggle('hidden', !isManagerSelected);
+            managerPasswordInput.required = isManagerSelected;
+        });
+
+        function setupRealtimeListener(userId) {
             if (unsubscribe) unsubscribe();
-            if (!isAuthReady || !db || !userId) {
-                console.warn("Authentication not ready or Firebase not initialized for listener.");
-                return;
-            }
 
-            const timesheetCollectionRef = collection(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`);
-            let q;
-
-            if (isManagerView && isManager) {
-                tableTitle.textContent = "All Volunteer Hours";
-                q = query(timesheetCollectionRef);
-                fetchAllProfiles();
-                document.getElementById('th-volunteer').classList.remove('hidden');
-                document.getElementById('th-team').classList.remove('hidden');
-            } else {
-                tableTitle.textContent = "My Logged Hours";
-                q = query(timesheetCollectionRef, where("userId", "==", userId));
-                document.getElementById('th-volunteer').classList.add('hidden');
-                document.getElementById('th-team').classList.add('hidden');
-            }
-            
-            loadingState.style.display = 'block';
+            const collectionRef = collection(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`);
+            const q = isManagerView && isManager ? query(collectionRef) : query(collectionRef, where("userId", "==", userId));
 
             unsubscribe = onSnapshot(q, (snapshot) => {
                 loadingState.style.display = 'none';
-                const entries = [];
-                snapshot.forEach(doc => {
-                    entries.push({ id: doc.id, ...doc.data() });
-                });
-                entries.sort((a, b) => new Date(b.date + 'T' + b.timeIn) - new Date(a.date + 'T' + a.timeIn));
-                renderEntries(entries);
-            }, (error) => {
+                const entries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderEntriesByMonth(entries);
+            }, error => {
                 console.error("Error fetching entries: ", error);
-                errorMessageDiv.textContent = "Failed to load entries. Check Firestore security rules for timesheet entries.";
-                loadingState.textContent = "Failed to load data.";
+                loadingState.textContent = "Failed to load data. Check security rules.";
             });
         }
-        
-        async function fetchAllProfiles() {
-            const profilesCollectionRef = collection(db, `artifacts/${currentProjectId}/public/data/profiles`);
-            try {
-                const snapshot = await getDocs(profilesCollectionRef);
-                profilesCache = {};
-                snapshot.forEach(doc => {
-                    profilesCache[doc.id] = doc.data();
-                });
-            } catch (error) {
-                console.error("Error fetching all profiles:", error);
-                errorMessageDiv.textContent = "Failed to load all volunteer profiles.";
-            }
-        }
 
-        function renderEntries(entries) {
-            tableBody.innerHTML = '';
+        function renderEntriesByMonth(entries) {
+            monthlyEntriesContainer.innerHTML = '';
             if (entries.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="9" class="text-center p-6 text-gray-500">No entries found.</td></tr>`;
+                monthlyEntriesContainer.innerHTML = '<p class="text-center text-gray-500">No entries found.</p>';
                 return;
             }
-            entries.forEach(entry => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-gray-50';
-                
-                const profile = isManagerView ? profilesCache[entry.userId] : userProfile;
-                const volunteerName = profile ? profile.name : 'Unknown';
-                const volunteerTeam = profile ? profile.team : 'N/A';
-                
-                const deleteButton = (userId === entry.userId || isManager) 
-                    ? `<button data-id="${entry.id}" class="delete-btn text-red-500 hover:text-red-700 font-semibold transition">Delete</button>`
-                    : '';
+            
+            const groupedByMonth = entries.reduce((acc, entry) => {
+                const monthKey = entry.date.substring(0, 7); // YYYY-MM
+                if (!acc[monthKey]) {
+                    acc[monthKey] = [];
+                }
+                acc[monthKey].push(entry);
+                return acc;
+            }, {});
 
-                tr.innerHTML = `
-                    ${isManagerView ? `<td class="px-6 py-4 whitespace-nowrap font-medium">${volunteerName}</td><td class="px-6 py-4 whitespace-nowrap">${volunteerTeam}</td>` : ''}
-                    <td class="px-6 py-4 whitespace-nowrap">${entry.date}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formatTime(entry.timeIn)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${formatTime(entry.timeOut)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap font-bold">${entry.totalHours}</td>
-                    <td class="px-6 py-4 max-w-xs truncate" title="${entry.taskName}">${entry.taskName}</td>
-                    <td class="px-6 py-4 max-w-xs truncate" title="${entry.notes || ''}">${entry.notes || ''}</td>
-                    <td class="px-6 py-4 text-center">${deleteButton}</td>
-                `;
-                tableBody.appendChild(tr);
+            Object.keys(groupedByMonth).sort().reverse().forEach(monthKey => {
+                const monthEntries = groupedByMonth[monthKey];
+                monthEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                const totalMinutes = monthEntries.reduce((sum, entry) => {
+                    return entry.status === 'validated' ? sum + entry.totalMinutes : sum;
+                }, 0);
+                const totalHoursDisplay = formatMinutes(totalMinutes);
+                
+                const monthName = new Date(`${monthKey}-02`).toLocaleString('default', { month: 'long', year: 'numeric' });
+
+                const details = document.createElement('details');
+                details.className = "bg-white rounded-2xl shadow-lg overflow-hidden";
+                details.open = monthKey === new Date().toISOString().substring(0, 7); // Open current month by default
+                
+                details.innerHTML = `
+                    <summary class="p-4 sm:p-6 cursor-pointer flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-800">${monthName}</h3>
+                        <div class="flex items-center gap-4">
+                            <span class="text-lg font-bold text-misss-primary">${totalHoursDisplay}</span>
+                            <svg class="w-6 h-6 transition-transform transform details-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </summary>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm text-left text-gray-800">
+                           <thead class="bg-gray-50 text-xs text-gray-600 uppercase tracking-wider">
+                                <tr>
+                                    ${isManagerView ? '<th scope="col" class="px-6 py-3">Volunteer</th>' : ''}
+                                    <th scope="col" class="px-6 py-3">Date</th>
+                                    <th scope="col" class="px-6 py-3">Task</th>
+                                    <th scope="col" class="px-6 py-3">Hours</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                ${monthEntries.map(entry => createEntryRow(entry)).join('')}
+                            </tbody>
+                        </table>
+                    </div>`;
+                monthlyEntriesContainer.appendChild(details);
             });
         }
         
+        function createEntryRow(entry) {
+            const statusColors = {
+                pending: 'bg-yellow-400',
+                validated: 'bg-green-500',
+                rejected: 'bg-red-500',
+            };
+            const statusDot = `<span class="inline-block w-3 h-3 ${statusColors[entry.status] || 'bg-gray-400'} rounded-full"></span>`;
+            
+            let actionButtons = '';
+            if (isManagerView && auth.currentUser.uid !== entry.userId) {
+                actionButtons = `
+                    <button data-id="${entry.id}" data-status="validated" class="validate-btn text-green-600 hover:text-green-800 font-semibold transition px-2">Approve</button>
+                    <button data-id="${entry.id}" data-status="rejected" class="validate-btn text-red-600 hover:text-red-800 font-semibold transition px-2">Reject</button>
+                `;
+            } else {
+                 actionButtons = `<button data-id="${entry.id}" class="delete-btn text-gray-500 hover:text-red-700 font-semibold transition">Delete</button>`;
+            }
+
+            return `
+                <tr class="hover:bg-gray-50">
+                    ${isManagerView ? `<td class="px-6 py-4 whitespace-nowrap"><div class="font-medium">${entry.userName || 'N/A'}</div><div class="text-xs text-gray-500">${entry.userTeam || ''}</div></td>` : ''}
+                    <td class="px-6 py-4 whitespace-nowrap">${entry.date}</td>
+                    <td class="px-6 py-4"><div class="font-medium">${entry.taskName}</div><div class="text-xs text-gray-500">${entry.notes || ''}</div></td>
+                    <td class="px-6 py-4 whitespace-nowrap font-bold">${formatMinutes(entry.totalMinutes)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap capitalize">${statusDot} ${entry.status}</td>
+                    <td class="px-6 py-4 text-center">${actionButtons}</td>
+                </tr>
+            `;
+        }
+
         timesheetForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            errorMessageDiv.textContent = '';
-            const formData = {
+            const start = new Date(`${date.value}T${document.getElementById('time-in').value}`);
+            const end = new Date(`${date.value}T${document.getElementById('time-out').value}`);
+
+            if(end <= start) {
+                errorMessageDiv.textContent = 'Time Out must be after Time In.';
+                return;
+            }
+
+            const totalMinutes = (end.getTime() - start.getTime()) / 60000;
+
+            await addDoc(collection(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`), {
                 date: document.getElementById('date').value,
                 timeIn: document.getElementById('time-in').value,
                 timeOut: document.getElementById('time-out').value,
                 taskName: document.getElementById('task-name').value.trim(),
-                notes: document.getElementById('notes').value.trim()
-            };
-
-            const start = new Date(`${formData.date}T${formData.timeIn}`);
-            const end = new Date(`${formData.date}T${formData.timeOut}`);
-            if (end <= start) {
-                errorMessageDiv.textContent = 'Error: Time Out must be after Time In.';
-                return;
-            }
-
-            if (!userProfile) {
-                errorMessageDiv.textContent = 'Error: User profile not loaded. Please complete your profile.';
-                return;
-            }
-
-            try {
-                const timesheetCollectionRef = collection(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`);
-                await addDoc(timesheetCollectionRef, {
-                    ...formData,
-                    userId: userId,
-                    userName: userProfile.name,
-                    userTeam: userProfile.team,
-                    totalHours: calculateTotalHours(start, end),
-                    createdAt: new Date().toISOString()
-                });
-                timesheetForm.reset();
-                setDefaultDate();
-            } catch (error) {
-                console.error("Error adding document: ", error);
-                if (error.code === 'appCheck/token-expired' || error.code === 'appCheck/invalid-token') {
-                    errorMessageDiv.textContent = 'Failed to save entry. App Check verification failed. Please refresh the page.';
-                } else if (error.code === 'permission-denied') {
-                    errorMessageDiv.textContent = 'Permission denied. Check your Firestore Security Rules.';
-                } else {
-                    errorMessageDiv.textContent = 'Failed to save entry. Please try again.';
-                }
-            }
+                notes: document.getElementById('notes').value.trim(),
+                totalMinutes,
+                status: 'pending',
+                userId: auth.currentUser.uid,
+                userName: userProfile.name,
+                userTeam: userProfile.team,
+                createdAt: new Date().toISOString()
+            });
+            timesheetForm.reset();
+            setDefaultDate();
         });
 
-        tableBody.addEventListener('click', async (e) => {
-            if (e.target.classList.contains('delete-btn')) {
-                const id = e.target.dataset.id;
-                try {
-                    const docRef = doc(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`, id);
-                    await deleteDoc(docRef);
-                } catch (error) {
-                    console.error("Error deleting document: ", error);
-                    if (error.code === 'appCheck/token-expired' || error.code === 'appCheck/invalid-token') {
-                        errorMessageDiv.textContent = 'Failed to delete entry. App Check verification failed. Please refresh the page.';
-                    } else if (error.code === 'permission-denied') {
-                        errorMessageDiv.textContent = 'Permission denied. Check your Firestore Security Rules.';
-                    } else {
-                        errorMessageDiv.textContent = 'Failed to delete entry.';
-                    }
-                }
-            }
+        monthlyEntriesContainer.addEventListener('click', async (e) => {
+             const target = e.target;
+             const entryId = target.dataset.id;
+             if (!entryId) return;
+
+             const entryRef = doc(db, `artifacts/${currentProjectId}/public/data/timesheetEntries`, entryId);
+
+             if(target.classList.contains('delete-btn')) {
+                await deleteDoc(entryRef);
+             }
+             if(target.classList.contains('validate-btn')) {
+                const newStatus = target.dataset.status;
+                await updateDoc(entryRef, { status: newStatus });
+             }
         });
-        
+
         managerToggle.addEventListener('change', (e) => {
             isManagerView = e.target.checked;
-            setupRealtimeListener();
+            setupRealtimeListener(auth.currentUser.uid);
         });
 
-        const calculateTotalHours = (start, end) => {
-            let diff = end.getTime() - start.getTime();
-            let hours = Math.floor(diff / 3600000);
-            let minutes = Math.floor((diff % 3600000) / 60000);
+        const formatMinutes = (mins) => {
+            if (isNaN(mins) || mins < 0) return '0h 0m';
+            const hours = Math.floor(mins / 60);
+            const minutes = Math.round(mins % 60);
             return `${hours}h ${minutes}m`;
-        };
-        const formatTime = (timeString) => new Date(`1970-01-01T${timeString}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        }
         const setDefaultDate = () => document.getElementById('date').value = new Date().toISOString().split('T')[0];
-
-        window.onload = () => {
-            setDefaultDate();
-            initializeAppAndAuth();
-        };
+        
+        // Init
+        setDefaultDate();
+        initializeFirebase();
     </script>
 </body>
 </html>
