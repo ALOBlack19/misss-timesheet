@@ -164,7 +164,7 @@
             db = getFirestore(app);
             auth = getAuth(app);
             currentProjectId = firebaseConfig.projectId;
-            initializeAppCheck(app, { provider: new ReCaptchaV3Provider('6LcezoorAAAAANKEDrvWyXOdiqM3QvcESRxqWH4j'), isTokenAutoRefreshEnabled: true });
+            initializeAppCheck(app, { provider: new ReCaptchaV3Provider('6LfYypgrAAAAAJ_0iFoO8GHcPyGzuWeCsqNzDLfw'), isTokenAutoRefreshEnabled: true });
             
             onAuthStateChanged(auth, handleAuthStateChange);
         }
